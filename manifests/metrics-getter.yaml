@@ -1,0 +1,47 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: metrics-getter
+spec:
+  schedule: "*/1 * * * *"
+  concurrencyPolicy: Allow
+  jobTemplate:
+    spec:
+      ttlSecondsAfterFinished: 120
+      completions: 1
+      parallelism: 1
+      backoffLimit: 5
+      template:
+        spec:
+          containers:
+          - name: metrics-getter
+            image: opeco17/metrics-getter:latest
+            imagePullPolicy: IfNotPresent
+            command: ["python3",  "main.py"]
+            env:
+            - name: TARGET_WEB_PAGE_URI
+              valueFrom:
+                configMapKeyRef:
+                    name: general-config
+                    key: TARGET_WEB_PAGE_URI
+            - name: PLATFORM
+              valueFrom:
+                configMapKeyRef:
+                    name: general-config
+                    key: PLATFORM
+            - name: ELASTICSEARCH_HOST
+              valueFrom:
+                configMapKeyRef:
+                    name: general-config
+                    key: ELASTICSEARCH_HOST
+            - name: ELASTICSEARCH_PORT
+              valueFrom:
+                configMapKeyRef:
+                    name: general-config
+                    key: ELASTICSEARCH_PORT
+            - name: TZ
+              valueFrom:
+                configMapKeyRef:
+                    name: general-config
+                    key: TZ
+          restartPolicy: Never

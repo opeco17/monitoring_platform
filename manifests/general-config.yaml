@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: general-config
+data:
+  TARGET_WEB_PAGE_URI: https://www.pixiv.net/
+  PLATFORM: desktop
+  ELASTICSEARCH_HOST: elasticsearch
+  ELASTICSEARCH_PORT: "9200"
+  ELASTICSEARCH_URL: http://elasticsearch:9200
+  TZ: Asia/Tokyo
