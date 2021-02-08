@@ -1,6 +1,9 @@
+import json
 import sys
 from typing import Dict
 
+from elasticsearch import Elasticsearch
+import elasticsearch
 import requests
 from requests.models import Response
 from requests.exceptions import HTTPError
@@ -36,7 +39,8 @@ def get_page_speed_metrics() -> Dict:
         metrics = {
             'server_response_time': extract_value('server-response-time'),
             'time_to_interactive': extract_value('interactive'),
-            'speed_index': extract_value('speed-index')
+            'speed_index': extract_value('speed-index'),
+            'first_contentful_paint': extract_value('first-contentful-paint')
         }        
         return metrics
         
@@ -49,15 +53,43 @@ def get_page_speed_metrics() -> Dict:
         logger.error(f'Wrong key name: {key_error}')
         sys.exit(1)
     
+
+def create_index_template(elasticsearch: Elasticsearch) -> None:
+    """Create index template if not exists"""
+    exist_index_template = elasticsearch.indices.exists_index_template(name=Config.INDEX_TEMPLATE_NAME)
+    if not exist_index_template:
+        return
     
-def insert_elasticsearch(metrics: Dict):
+    with open(Config.INDEX_TEMPLATE_PATH) as index_template_file:
+        index_template = json.load(index_template_file)
+        
+    index_template['index_patterns'].append(f'{Config.INDEX_PREFIX}*')
+    result = elasticsearch.indices.put_index_template(name=Config.INDEX_TEMPLATE_NAME, body=index_template)
+    if result.get('acknowledged') is True:
+        return
+
+    logger.error('Failed to create index pattern.')
+    raise Exception
+    
+
+def insert_elasticsearch(elasticsearch: Elasticsearch, metrics: Dict) -> None:
     pass
     
 
 def main():
     metrics = get_page_speed_metrics()
     
+    elasticsearch = Elasticsearch(Config.ELASTICSEARCH_URL)
+    create_index_template(elasticsearch)
+    insert_elasticsearch(elasticsearch, metrics)
+    
+    
     
 
 if __name__ == '__main__':
+    logger.debug('----------------------------Config----------------------------')
+    for key, value in Config.__dict__.items():
+        logger.debug(f'{key}: {value}')
+    logger.debug('--------------------------------------------------------------')
+    
     main()

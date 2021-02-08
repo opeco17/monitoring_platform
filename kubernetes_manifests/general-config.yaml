@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: general-config
 data:
-  TARGET_WEB_PAGE_URI: https://www.pixiv.net/
+  TARGET_WEB_PAGE_URI: https://www.google.com/
   PLATFORM: desktop
   ELASTICSEARCH_HOST: elasticsearch
   ELASTICSEARCH_PORT: "9200"

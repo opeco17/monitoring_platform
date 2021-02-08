@@ -1,3 +1,4 @@
+from logging import DEBUG, INFO, WARNING, ERROR
 import os
 
 
@@ -9,3 +10,11 @@ class Config(object):
     
     ELASTICSEARCH_HOST = os.environ.get('ELASTICSEARCH_HOST')
     ELASTICSEARCH_PORT = os.environ.get('ELASTICSEARCH_PORT')
+    ELASTICSEARCH_URL = f'http://{ELASTICSEARCH_HOST}:{ELASTICSEARCH_PORT}'
+    
+    INDEX_PREFIX = 'pagespeed-metrics-'
+    INDEX_TEMPLATE_NAME = f'pagespeed-metrics-index-template'
+    INDEX_TEMPLATE_PATH = './index_template.json'
+    
+    LOG_LEVEL_DICT = {'DEBUG': DEBUG, 'INFO': INFO, 'WARNING': WARNING, 'ERROR': ERROR}
+    LOG_LEVEL = LOG_LEVEL_DICT[os.environ.get('LOG_LEVEL')]

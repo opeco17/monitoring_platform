@@ -1,0 +1,14 @@
+{
+  "index_patterns": [],
+  "template": {
+    "mappings": {
+      "properties": {
+        "@timestamp": {"type": "date", "format": "epoch_millis"},
+        "server_response_time": {"type": "float"},
+        "time_to_interactive": {"type": "float"},
+        "speed_index": {"type": "float"},
+        "first_contentful_paint": {"type": "float"}
+      }
+    }
+  }
+}
