@@ -4,6 +4,8 @@
     "mappings": {
       "properties": {
         "@timestamp": {"type": "date", "format": "epoch_millis"},
+        "target_url": {"type": "keyword"},
+        "platform": {"type": "keyword"},
         "server_response_time": {"type": "float"},
         "time_to_interactive": {"type": "float"},
         "speed_index": {"type": "float"},

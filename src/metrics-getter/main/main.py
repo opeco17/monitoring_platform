@@ -1,9 +1,10 @@
+import datetime
 import json
 import sys
+import time
 from typing import Dict
 
 from elasticsearch import Elasticsearch
-import elasticsearch
 import requests
 from requests.models import Response
 from requests.exceptions import HTTPError
@@ -16,14 +17,14 @@ from logger import get_logger
 logger = get_logger()
 
 
-@retry(exceptions=HTTPError, tries=5, delay=3, backoff=2, logger=logger)
+@retry(exceptions=HTTPError, tries=5, delay=3, logger=logger)
 def get_response() -> Response:
     params = {
         'url': Config.TARGET_WEB_PAGE_URI,
         'strategy': Config.PLATFORM
     }
     response = requests.get(Config.PAGE_SPEED_INSIGHTS_API_URI, params=params)
-    logger.info(f'Status Code: {response.status_code}')
+    logger.info(f'Status Code from PageSpeed Insights API: {response.status_code}')
     response.raise_for_status()
     return response
 
@@ -41,7 +42,7 @@ def get_page_speed_metrics() -> Dict:
             'time_to_interactive': extract_value('interactive'),
             'speed_index': extract_value('speed-index'),
             'first_contentful_paint': extract_value('first-contentful-paint')
-        }        
+        }
         return metrics
         
     except HTTPError as http_error:
@@ -55,35 +56,53 @@ def get_page_speed_metrics() -> Dict:
     
 
 def create_index_template(elasticsearch: Elasticsearch) -> None:
-    """Create index template if not exists"""
-    exist_index_template = elasticsearch.indices.exists_index_template(name=Config.INDEX_TEMPLATE_NAME)
-    if not exist_index_template:
+    """Create index template of Elasticsearch if not exists"""
+    exists_index_template = elasticsearch.indices.exists_index_template(name=Config.INDEX_TEMPLATE_NAME)
+    if exists_index_template:
         return
     
     with open(Config.INDEX_TEMPLATE_PATH) as index_template_file:
         index_template = json.load(index_template_file)
         
-    index_template['index_patterns'].append(f'{Config.INDEX_PREFIX}*')
+    index_template['index_patterns'].append(f'{Config.INDEX_PREFIX}-*')
     result = elasticsearch.indices.put_index_template(name=Config.INDEX_TEMPLATE_NAME, body=index_template)
     if result.get('acknowledged') is True:
+        logger.info('Index Patterns successfully processed.')
         return
 
-    logger.error('Failed to create index pattern.')
-    raise Exception
+    logger.error('Failed to create index pattern to Elasticsearch.')
+    sys.exit(1)
     
 
-def insert_elasticsearch(elasticsearch: Elasticsearch, metrics: Dict) -> None:
-    pass
+def insert_metrics(elasticsearch: Elasticsearch, metrics: Dict) -> None:
+    """Insert obtained metrics to Elasticsearch"""
+    epoch_ms = str(int(time.time() * 1000))
+    today = datetime.date.today()
     
-
-def main():
+    index_name = f'{Config.INDEX_PREFIX}-{today}'
+    body = metrics.copy()
+    body['@timestamp'] = epoch_ms
+    body['target_url'] = Config.TARGET_WEB_PAGE_URI
+    body['platform'] = Config.PLATFORM
+    
+    result = elasticsearch.index(index=index_name, body=body, refresh='wait_for')
+    if result['_shards']['failed'] == 0:
+        logger.info('Metrics successfully inserted to Elasticsearch.')
+        return
+    
+    logger.error('Failed to insert metrics to Elasticsearch.')
+    sys.exit(1)
+    
+    
+def main() -> None:
     metrics = get_page_speed_metrics()
     
     elasticsearch = Elasticsearch(Config.ELASTICSEARCH_URL)
     create_index_template(elasticsearch)
-    insert_elasticsearch(elasticsearch, metrics)
+    insert_metrics(elasticsearch, metrics)
+    elasticsearch.close()
     
-    
+    sys.exit(0)
     
 
 if __name__ == '__main__':

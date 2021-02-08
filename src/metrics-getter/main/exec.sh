@@ -8,5 +8,4 @@ export ELASTICSEARCH_PORT=30000
 
 export LOG_LEVEL=INFO
 
-chmod +x main.py
 python3 main.py

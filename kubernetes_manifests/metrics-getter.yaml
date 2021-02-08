@@ -39,6 +39,11 @@ spec:
                 configMapKeyRef:
                     name: general-config
                     key: ELASTICSEARCH_PORT
+            - name: LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                    name: general-config
+                    key: LOG_LEVEL
             - name: TZ
               valueFrom:
                 configMapKeyRef:
