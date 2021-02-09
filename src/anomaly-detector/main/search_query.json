@@ -1,0 +1,17 @@
+{
+    "size": null,
+    "_source": [
+        "@timestamp"
+      ],
+    "sort": [
+        {"@timestamp": {"order": "desc"}}
+    ],
+    "query": {
+        "bool": {
+            "filter": [
+                {"term": {"target_url": null}},
+                {"term": {"platform": null}}
+            ]
+        }
+    }
+}

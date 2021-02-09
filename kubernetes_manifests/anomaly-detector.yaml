@@ -1,21 +1,21 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: metrics-getter
+  name: anomaly-detector
 spec:
-  schedule: "*/1 * * * *"
+  schedule: "*/5 * * * *"
   concurrencyPolicy: Allow
   jobTemplate:
     spec:
       ttlSecondsAfterFinished: 120
       completions: 1
       parallelism: 1
-      backoffLimit: 5
+      backoffLimit: 3
       template:
         spec:
           containers:
-          - name: metrics-getter
-            image: opeco17/metrics-getter:latest
+          - name: anomaly-detector
+            image: opeco17/anomaly-detector:latest
             imagePullPolicy: IfNotPresent
             command: ["python3",  "main.py"]
             env:
@@ -44,16 +44,31 @@ spec:
                 configMapKeyRef:
                     name: general-config
                     key: INDEX_TEMPLATE_NAME
-            - name: INDEX_TEMPLATE_FILE
+            - name: SEARCH_QUERY_FILE
               valueFrom:
                 configMapKeyRef:
                     name: general-config
-                    key: INDEX_TEMPLATE_FILE
+                    key: SEARCH_QUERY_FILE
+            - name: ALERT_TARGET_METRICS
+              valueFrom:
+                configMapKeyRef:
+                    name: general-config
+                    key: ALERT_TARGET_METRICS
+            - name: METRICS_SEQUENCE_LENGTH
+              valueFrom:
+                configMapKeyRef:
+                    name: general-config
+                    key: METRICS_SEQUENCE_LENGTH
             - name: LOG_LEVEL
               valueFrom:
                 configMapKeyRef:
                     name: general-config
                     key: LOG_LEVEL
+            - name: WEBHOOK_URL
+              valueFrom:
+                configMapKeyRef:
+                    name: general-config
+                    key: WEBHOOK_URL       
             - name: TZ
               valueFrom:
                 configMapKeyRef:

@@ -61,7 +61,7 @@ def create_index_template(elasticsearch: Elasticsearch) -> None:
     if exists_index_template:
         return
     
-    with open(Config.INDEX_TEMPLATE_PATH) as index_template_file:
+    with open(Config.INDEX_TEMPLATE_FILE) as index_template_file:
         index_template = json.load(index_template_file)
         
     index_template['index_patterns'].append(f'{Config.INDEX_PREFIX}-*')

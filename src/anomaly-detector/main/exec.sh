@@ -9,6 +9,8 @@ export LOG_LEVEL=INFO
 
 export INDEX_PREFIX=pagespeed-metrics
 export INDEX_TEMPLATE_NAME=pagespeed-metrics-index-template
-export INDEX_TEMPLATE_FILE=index_template.json
+export SEARCH_QUERY_FILE=search_query.json
+export ALERT_TARGET_METRICS=server_response_time
+export METRICS_SEQUENCE_LENGTH=100
 
 python3 main.py
