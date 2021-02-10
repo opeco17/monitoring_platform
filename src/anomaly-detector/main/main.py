@@ -37,7 +37,7 @@ def create_search_query() -> Dict:
     search_query['query']['bool']['filter'][0]['term']['target_url'] = Config.TARGET_WEB_PAGE_URI
     search_query['query']['bool']['filter'][1]['term']['platform'] = Config.PLATFORM
     search_query['aggs']['histogram']['aggs']['metrics_average']['avg']['field'] = Config.ALERT_TARGET_METRICS
-    search_query['aggs']['histogram']['aggs']['timestamp_sort']['bucket_sort']['size'] = int(Config.METRICS_SEQUENCE_LENGTH)
+    search_query['aggs']['histogram']['aggs']['timestamp_sort']['bucket_sort']['size'] = Config.METRICS_SEQUENCE_LENGTH
     
     logger.debug('----------------------------Search Query----------------------------')
     logger.debug(search_query)
@@ -79,12 +79,11 @@ def check_obtained_records(timestamp_sequence:List) -> None:
     failure_count = 0
     failure = False
     target_time = latest_time
-    allowable_number_of_failures = int(Config.ALLOWABLE_NUMBER_OF_FAILURES)
     for i in range(len(timestamp_sequence)):
         if timestamp_sequence[i] != target_time:
             failure_count += 1
 
-        if failure_count > allowable_number_of_failures:
+        if failure_count > Config.ALLOWABLE_NUMBER_OF_FAILURES:
             failure = True
             break
         
@@ -94,13 +93,14 @@ def check_obtained_records(timestamp_sequence:List) -> None:
         logger.info('Obtained sequence records OK')
         return
 
-    alert_text = f'Missing values followed {allowable_number_of_failures} times continuously.\n'
-    alert_text += f'Please confirm metrics in {str(timestamp_sequence[i-allowable_number_of_failures])} ~ {str(timestamp_sequence[i])}.'
+    alert_text = f'Missing values followed {Config.ALLOWABLE_NUMBER_OF_FAILURES} times continuously.\n'
+    alert_text += f'Please confirm metrics in {str(timestamp_sequence[i-Config.ALLOWABLE_NUMBER_OF_FAILURES])} ~ {str(timestamp_sequence[i])}.'
     alert_username = '[Error] Metrics not exist'
     logger.error(alert_text)
     try:
         send_alert(alert_text, alert_username)
         logger.info('Send webhook alert succeeded.')
+        sys.exit(0)
     except HTTPError:
         logger.error('Send webhook alert failed.')
         sys.exit(1)
@@ -139,9 +139,9 @@ def anomaly_detection(metrics_sequence: List, timestamp_sequence: List) -> None:
     
     boundaly = int(Config.METRICS_SEQUENCE_LENGTH*0.2)
     new_metrics_average = cal_avg(metrics_sequence[:boundaly])
-    old_metrics_average = cal_avg(metrics_sequence[boundaly:])
+    old_metrics_average = cal_avg(metrics_sequence[boundaly:Config.METRICS_SEQUENCE_LENGTH])
     
-    anomalous = new_metrics_average * float(Config.THRESHOLD_RATE) > old_metrics_average
+    anomalous = new_metrics_average * Config.THRESHOLD_RATE > old_metrics_average
     if not anomalous:
         logger.info('There are no ploblems.')
         return
@@ -153,6 +153,7 @@ def anomaly_detection(metrics_sequence: List, timestamp_sequence: List) -> None:
     try:
         send_alert(alert_text, alert_username)
         logger.info('Send webhook alert succeeded.')
+        sys.exit(0)
     except HTTPError:
         logger.error('Send webhook alert failed.')
         sys.exit(1)

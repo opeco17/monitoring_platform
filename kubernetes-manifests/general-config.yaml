@@ -17,5 +17,5 @@ data:
   ALLOWABLE_NUMBER_OF_FAILURES: "3"
   THRESHOLD_RATE: "0.3"
   LOG_LEVEL: INFO
-  WEBHOOK_URL: https://hooks.slack.com/services/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
+  WEBHOOK_URL: https://hooks.slack.com/services/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
   TZ: Asia/Tokyo
