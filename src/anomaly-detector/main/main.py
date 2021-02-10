@@ -101,7 +101,6 @@ def check_obtained_records(timestamp_sequence:List) -> None:
     try:
         send_alert(alert_text, alert_username)
         logger.info('Send webhook alert succeeded.')
-        sys.exit(0)
     except HTTPError:
         logger.error('Send webhook alert failed.')
         sys.exit(1)
@@ -135,17 +134,36 @@ def fill_missing_value(metrics_sequence: List, timestamp_sequence: List) -> Tupl
     return list(filled_metrics_sequence), list(filled_timestamp_sequence)
 
     
-def anomaly_detection(metrics_list: List, timestamp_list: List) -> bool:
-    pass
-
-
+def anomaly_detection(metrics_sequence: List, timestamp_sequence: List) -> None:
+    cal_avg = lambda sequence: sum(sequence) / len(sequence)
     
+    boundaly = int(Config.METRICS_SEQUENCE_LENGTH*0.2)
+    new_metrics_average = cal_avg(metrics_sequence[:boundaly])
+    old_metrics_average = cal_avg(metrics_sequence[boundaly:])
+    
+    anomalous = new_metrics_average * float(Config.THRESHOLD_RATE) > old_metrics_average
+    if not anomalous:
+        logger.info('There are no ploblems.')
+        return
+
+    alert_text = f'Metrics sharply increased.\n'
+    alert_text += f'Please confirm metrics in {str(timestamp_sequence[boundaly])} ~ {str(timestamp_sequence[0])}.'
+    alert_username = '[Error] Metrics sharply increased'
+    logger.error(alert_text)
+    try:
+        send_alert(alert_text, alert_username)
+        logger.info('Send webhook alert succeeded.')
+    except HTTPError:
+        logger.error('Send webhook alert failed.')
+        sys.exit(1)
+
 
 def main() -> None:
     elasticsearch = Elasticsearch(Config.ELASTICSEARCH_URL)
     metrics_sequence, timestamp_sequence = search_metrics_sequence(elasticsearch)
     check_obtained_records(timestamp_sequence)
     metrics_sequence, timestamp_sequence = fill_missing_value(metrics_sequence, timestamp_sequence)
+    anomaly_detection(metrics_sequence, timestamp_sequence)
     elasticsearch.close()
     
 
