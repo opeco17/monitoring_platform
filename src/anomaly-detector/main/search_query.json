@@ -1,11 +1,4 @@
 {
-    "size": null,
-    "_source": [
-        "@timestamp"
-      ],
-    "sort": [
-        {"@timestamp": {"order": "desc"}}
-    ],
     "query": {
         "bool": {
             "filter": [
@@ -13,5 +6,34 @@
                 {"term": {"platform": null}}
             ]
         }
-    }
+    },
+    "size": 0,
+    "aggs": {
+        "histogram": {
+            "date_histogram": {
+                "field": "@timestamp",
+                "fixed_interval": "1m",
+                "format": "epoch_millis"
+            },
+            "aggs": {
+                "metrics_average": {
+                    "avg": {"field": null}
+                },
+                "timestamp_average": {
+                    "avg": {"field": "@timestamp"}
+                },
+                "timestamp_sort": {
+                    "bucket_sort": {
+                        "sort": [
+                            {"timestamp_average": {"order": "desc"}}
+                        ],
+                        "size": null
+                    }
+                }
+            }
+        }
+    },
+    "sort": [
+        {"@timestamp": {"order": "desc"}}
+    ]
 }
