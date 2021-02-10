@@ -10,17 +10,17 @@ for dir in 'metrics-getter' 'anomaly-detector'; do
     cd $base_path
 done
 
-# # Run Kubernetes
-# kubectl apply -f kubernetes-manifests/general-config.yaml
-# kubectl apply -f kubernetes-manifests/elasticsearch.yaml
-# kubectl apply -f kubernetes-manifests/kibana.yaml
+# Run Kubernetes
+kubectl apply -f kubernetes-manifests/general-config.yaml
+kubectl apply -f kubernetes-manifests/elasticsearch.yaml
+kubectl apply -f kubernetes-manifests/kibana.yaml
 
-# # Wait to run Elasticsearch
-# sleep 60
+# Wait to start Elasticsearch
+sleep 60
 
-# kubectl apply -f kubernetes-manifests/metrics-getter.yaml
+kubectl apply -f kubernetes-manifests/metrics-getter.yaml
 
-# # Wait to get a sufficient number of metrics
-# sleep 180
+# Wait to get a sufficient number of metrics
+sleep 3600
 
-# kubectl apply -f kubernetes-manifests/anomaly-detector.yaml
+kubectl apply -f kubernetes-manifests/anomaly-detector.yaml
