@@ -2,7 +2,6 @@
 
 # Build docker image
 base_path=$(pwd)
-echo $base_path
 for dir in 'metrics-getter' 'anomaly-detector'; do
     cd src/$dir
     chmod +x build.sh

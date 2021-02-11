@@ -2,5 +2,5 @@ __pycache__
 .DS_Store
 delete_all_pv_pvc.sh
 kubernetes-manifests/general-config.yaml
-imgs/*
+docs/*
 exec.sh
