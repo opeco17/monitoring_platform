@@ -11,8 +11,8 @@
 # How to use
 
 ```
-git clone git@github.com:opeco17/monitoring_platform.git
-cd monitoring_platform
+git clone git@github.com:opeco17/pagespeed_monitoring.git
+cd pagespeed_monitoring
 chmod +x start.sh
 ./start.sh
 ```
