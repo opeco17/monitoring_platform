@@ -3,4 +3,4 @@ __pycache__
 delete_all_pv_pvc.sh
 kubernetes-manifests/general-config.yaml
 docs/*
-exec.sh
+local.py
