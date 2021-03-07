@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: anomaly-detector
 spec:
-  schedule: "*/5 * * * *"
+  schedule: "*/1 * * * *"
   concurrencyPolicy: Allow
   jobTemplate:
     spec:
@@ -59,6 +59,16 @@ spec:
                 configMapKeyRef:
                     name: general-config
                     key: METRICS_SEQUENCE_LENGTH
+            - name: ALLOWABLE_NUMBER_OF_FAILURES
+              valueFrom:
+                configMapKeyRef:
+                    name: general-config
+                    key: ALLOWABLE_NUMBER_OF_FAILURES
+            - name: THRESHOLD_RATE
+              valueFrom:
+                configMapKeyRef:
+                    name: general-config
+                    key: THRESHOLD_RATE
             - name: LOG_LEVEL
               valueFrom:
                 configMapKeyRef:
