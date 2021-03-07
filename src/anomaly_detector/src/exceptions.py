@@ -1,15 +1,9 @@
 
 class ConnectionCloseError(Exception):
     """Error when failing to close the connection with Elasticsearch"""
-    
-class EnoughMetricsNotExists(Exception):
-    """Error generated when not enough metrics exists"""
 
 class IncorrectElasticsearchURLError(Exception):
     """Error when Elasticsearch URL is incorrect"""  
-    
-class MetricsIncreaseError(Exception):
-    """Error that occurs when the metrics increase"""  
 
 class SendAlertByWebhookError(Exception):
     """Error when failing to send alert by webhook"""
