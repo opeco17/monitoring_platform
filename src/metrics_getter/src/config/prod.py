@@ -2,7 +2,7 @@ from logging import DEBUG, INFO, WARNING, ERROR
 import os
 
 
-class Config(object):
+class Config:
     
     PAGE_SPEED_INSIGHTS_API_URI = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed'
     TARGET_WEB_PAGE_URI = os.environ.get('TARGET_WEB_PAGE_URI')

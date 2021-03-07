@@ -1,0 +1,20 @@
+[
+    {
+        "target_url":"https://www.google.com/",
+        "platform":"desktop",
+        "server_response_time":10.0,
+        "time_to_interactive":10.0,
+        "speed_index":10.0,
+        "first_contentful_paint":10.0,
+        "@timestamp":"1615093016526"
+    },
+    {
+        "target_url":"https://www.amazon.com/",
+        "platform":"desktop",
+        "server_response_time":10.0,
+        "time_to_interactive":10.0,
+        "speed_index":10.0,
+        "first_contentful_paint":10.0,
+        "@timestamp":"1615093016526"
+    }
+]

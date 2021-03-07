@@ -6,20 +6,16 @@ from connect_es import ElasticsearchConnector
 from exceptions import *
 from get_metrics import MetricsGetter
 from logger import logger
+from utils import get_web_page_url_list, show_config_contents
 
 
-def show_config_contents() -> None:
-    logger.debug('----------------------------Config----------------------------')
-    for key, value in Config.__dict__.items():
-        logger.debug(f'{key}: {value}')
-    logger.debug('--------------------------------------------------------------')
-    
-
-def main() -> None:
+def main():
     show_config_contents()
     
+    target_web_page_url_list = get_web_page_url_list()
+    
     try:
-        metrics = MetricsGetter.get_page_speed_metrics()
+        metrics_list = MetricsGetter.get_multiple_page_speed_metrics(target_web_page_url_list)    
         elasticsearch_connector = ElasticsearchConnector()
     except GetMetricsError:
         logger.error('Failed to get metrics from Google PageSpeed Insights API')
@@ -31,7 +27,7 @@ def main() -> None:
     
     try:
         elasticsearch_connector.create_index_template()
-        elasticsearch_connector.insert(metrics)
+        elasticsearch_connector.bulk_insert(metrics_list)
     except IndexPatternConfirmError:
         logger.error('Failed to confirm index pattern of Elasticsearch')
         sys.exit(1)
@@ -45,5 +41,5 @@ def main() -> None:
         elasticsearch_connector.close()
     
 
-if __name__ == '__main__':        
+if __name__ == '__main__':
     main()

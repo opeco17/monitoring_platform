@@ -11,4 +11,4 @@ RUN apt-get update && \
   pip install -r requirements.txt
 
 COPY . /var/www
-WORKDIR /var/www/main
+WORKDIR /var/www/src

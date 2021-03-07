@@ -15,3 +15,6 @@ def get_logger(name=None) -> logging.Logger:
     logger.addHandler(sh)
     
     return logger
+
+
+logger = get_logger()

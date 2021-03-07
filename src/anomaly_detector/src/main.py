@@ -10,10 +10,10 @@ from requests.exceptions import HTTPError
 from retry import retry
 
 from config import Config
-from logger import get_logger
+from logger import logger
 
 
-logger = get_logger()
+logger = logger()
 
 
 @retry(exceptions=HTTPError, tries=5, delay=3, logger=logger)
