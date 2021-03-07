@@ -1,4 +1,5 @@
 from retry import retry
+from typing import List
 
 import json
 import requests
@@ -11,8 +12,27 @@ from logger import logger
 
 
 class AlertSender:
-
-    def send_alert(cls, text: str, username: str) -> None:
+    
+    @classmethod
+    def send_alert_for_record_not_enough(cls, web_page_url: str, timestamp_metrics_sequence: List) -> None:
+        timestamp_sequence, _ = zip(*timestamp_metrics_sequence)
+        alert_text = f'{web_page_url}\n'
+        alert_text += f'Missing values followed {Config.ALLOWABLE_NUMBER_OF_FAILURES} times continuously.\n'
+        alert_text += f'Please confirm metrics in {str(timestamp_sequence[0])} ~ {str(timestamp_sequence[-1])}.'
+        alert_username = '[Error] Enough metrics not exists'
+        cls._send_alert(alert_text, alert_username)
+        
+    @classmethod
+    def send_alert_for_metrics_increase(cls, web_page_url: str, timestamp_metrics_sequence: List) -> None:
+        timestamp_sequence, _ = zip(*timestamp_metrics_sequence)
+        alert_text = f'{web_page_url}\n'
+        alert_text += f'Missing values followed {Config.ALLOWABLE_NUMBER_OF_FAILURES} times continuously.\n'
+        alert_text += f'Please confirm metrics in {str(timestamp_sequence[0])} ~ {str(timestamp_sequence[-1])}.'
+        alert_username = '[Error] Enough metrics not exists'
+        cls._send_alert(alert_text, alert_username)
+        
+    @classmethod
+    def _send_alert(cls, text: str, username: str) -> None:
         data = json.dumps({
             'text': text, 
             'username': username

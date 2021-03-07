@@ -21,10 +21,10 @@ class ElasticsearchConnector:
         except LocationValueError:
             raise IncorrectElasticsearchURLError
         
-    def get_timestamp_metrics_sequence(self) -> List:
+    def get_timestamp_metrics_sequence(self, target_web_page_url: str) -> List:
         """Get page speed metrics from Elasticsearch"""
         index_name = f'{Config.INDEX_PREFIX}-*'
-        search_query = self._create_search_query()
+        search_query = self._create_search_query(target_web_page_url)
         try:
             result = self._client.search(index=index_name, body=search_query)
         except ConnectionError:
@@ -46,12 +46,12 @@ class ElasticsearchConnector:
         except ConnectionError:
             raise ConnectionCloseError
         
-    def _create_search_query(self) -> Dict:
+    def _create_search_query(self, target_web_page_url: str) -> Dict:
         """Create search query to get metrics from Elasticsearch"""
         with open(Config.SEARCH_QUERY_FILE) as file:
             search_query = json.load(file)
 
-        search_query['query']['bool']['filter'][0]['term']['target_url'] = Config.TARGET_WEB_PAGE_URI
+        search_query['query']['bool']['filter'][0]['term']['target_url'] = target_web_page_url
         search_query['query']['bool']['filter'][1]['term']['platform'] = Config.PLATFORM
         search_query['aggs']['histogram']['aggs']['metrics_average']['avg']['field'] = Config.ALERT_TARGET_METRICS
         search_query['aggs']['histogram']['aggs']['timestamp_sort']['bucket_sort']['size'] = Config.METRICS_SEQUENCE_LENGTH

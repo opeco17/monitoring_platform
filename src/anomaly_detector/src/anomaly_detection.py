@@ -10,29 +10,16 @@ from send_alert import AlertSender
 class AnomalyDetector:
     
     @classmethod
-    def check_missing_record(cls, timestamp_metrics_sequence: List) -> None:
-        """Check whether the number of missing record is larger than specified number"""
+    def check_record_num_is_enough(cls, timestamp_metrics_sequence: List) -> bool:
+        """If there are enough records in sequence, return True"""
         timestamp_sequence, _ = cls._timestamp_metrics_unzip(timestamp_metrics_sequence)
-        latest_time = cls._get_latest_time_in_sequence(timestamp_sequence)
-            
-        failure_count = 0
-        failure = False
-        target_time = latest_time
-        for i in range(len(timestamp_sequence)):
-            if timestamp_sequence[i] != target_time:
-                failure_count += 1
-
-            if failure_count > Config.ALLOWABLE_NUMBER_OF_FAILURES:
-                failure = True
-                break
-            
-            target_time -= datetime.timedelta(minutes=1)
-            
-        if failure:
-            logger.error('There are NOT enough metrics')
-            raise EnoughMetricsNotExists
-        else:
+        record_num_is_enough = cls._record_num_is_enough(timestamp_sequence)
+        if record_num_is_enough:
             logger.info('There are enough metrics')
+            return True
+        else:
+            logger.info('Number of record is not enough')
+            return False
     
     @classmethod
     def fill_missing_value(cls, timestamp_metrics_sequence: List) -> List:
@@ -64,7 +51,7 @@ class AnomalyDetector:
         return filled_timestamp_metrics_sequence
     
     @classmethod
-    def check_metrics_down(cls, timestamp_metrics_sequence: List) -> None:
+    def check_metrics_increase(cls, timestamp_metrics_sequence: List) -> None:
         timestamp_sequence, metrics_sequence = zip(*timestamp_metrics_sequence)
         cal_avg = lambda sequence: sum(sequence) / len(sequence)
         
@@ -74,7 +61,7 @@ class AnomalyDetector:
         
         anomalous = new_metrics_average * Config.THRESHOLD_RATE > old_metrics_average
         if anomalous:
-            raise MetricsDownError
+            raise MetricsIncreaseError
         else:
             logger.info('There is nothing wrong with the metrics')
     
@@ -87,6 +74,25 @@ class AnomalyDetector:
         else:
             latest_time = current_time - datetime.timedelta(minutes=1)
         return latest_time
+    
+    @classmethod
+    def _record_num_is_enough(cls, timestamp_sequence: List) -> bool:
+        if len(timestamp_sequence) < Config.METRICS_SEQUENCE_LENGTH - Config.ALLOWABLE_NUMBER_OF_FAILURES:
+            return False
+        
+        latest_time = cls._get_latest_time_in_sequence(timestamp_sequence)
+            
+        failure_count = 0
+        target_time = latest_time
+        for i in range(len(timestamp_sequence)):
+            if timestamp_sequence[i] != target_time:
+                failure_count += 1
+            if failure_count > Config.ALLOWABLE_NUMBER_OF_FAILURES:
+                return False
+            
+            target_time -= datetime.timedelta(minutes=1)
+            
+        return True
     
     @classmethod
     def _timestamp_metrics_unzip(cls, timestamp_metrics_sequence: List) -> Tuple[List, List]:

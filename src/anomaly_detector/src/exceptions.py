@@ -8,8 +8,8 @@ class EnoughMetricsNotExists(Exception):
 class IncorrectElasticsearchURLError(Exception):
     """Error when Elasticsearch URL is incorrect"""  
     
-class MetricsDownError(Exception):
-    """Error that occurs when the metrics down"""  
+class MetricsIncreaseError(Exception):
+    """Error that occurs when the metrics increase"""  
 
 class SendAlertByWebhookError(Exception):
     """Error when failing to send alert by webhook"""
