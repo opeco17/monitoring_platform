@@ -1,5 +1,6 @@
 __pycache__
 .DS_Store
+.vscode
 delete_all_pv_pvc.sh
 kubernetes-manifests/general-config.yaml
 docs/*
