@@ -4,7 +4,7 @@ from typing import List
 import json
 import requests
 from requests.models import Response
-from requests.exceptions import ConnectionError, HTTPError, Timeout
+from requests.exceptions import ConnectionError, HTTPError, MissingSchema, Timeout
 
 from config import Config
 from exceptions import *
@@ -26,9 +26,9 @@ class AlertSender:
     def send_alert_for_metrics_increase(cls, web_page_url: str, timestamp_metrics_sequence: List) -> None:
         timestamp_sequence, _ = zip(*timestamp_metrics_sequence)
         alert_text = f'{web_page_url}\n'
-        alert_text += f'Missing values followed {Config.ALLOWABLE_NUMBER_OF_FAILURES} times continuously.\n'
+        alert_text += f'Recent metrics increased more rapidly than past metrics.\n'
         alert_text += f'Please confirm metrics in {str(timestamp_sequence[0])} ~ {str(timestamp_sequence[-1])}.'
-        alert_username = '[Error] Enough metrics not exists'
+        alert_username = '[Error] Recent metrics rapidly increase'
         cls._send_alert(alert_text, alert_username)
         
     @classmethod
@@ -39,7 +39,7 @@ class AlertSender:
         })
         try:
             response = cls._post_request_with_retry(data=data)
-        except (ConnectionError, HTTPError, Timeout):
+        except (ConnectionError, HTTPError, MissingSchema, Timeout):
             raise SendAlertByWebhookError
         else:
             return response

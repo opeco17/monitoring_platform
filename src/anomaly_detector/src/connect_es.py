@@ -27,12 +27,15 @@ class ElasticsearchConnector:
         search_query = self._create_search_query(target_web_page_url)
         try:
             result = self._client.search(index=index_name, body=search_query)
+            records = result['aggregations']['histogram']['buckets']
+            if not records:
+                raise ConnectionError
         except ConnectionError:
             raise GetTimestampMetricsSequenceError
         else:
             # Order of these sequence is desc ([latest, ..., oldest])
             timestamp_metrics_sequence = []
-            for record in result['aggregations']['histogram']['buckets']:
+            for record in records:
                 timestamp = datetime.datetime.fromtimestamp(record['key'] // 1000)
                 metrics = record['metrics_average']['value']
                 timestamp_metrics_sequence.append((timestamp, metrics))

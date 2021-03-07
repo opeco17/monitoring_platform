@@ -15,17 +15,16 @@ class AnomalyDetector:
         timestamp_sequence, _ = cls._timestamp_metrics_unzip(timestamp_metrics_sequence)
         record_num_is_enough = cls._record_num_is_enough(timestamp_sequence)
         if record_num_is_enough:
-            logger.info('There are enough metrics')
             return True
-        else:
-            logger.info('Number of record is not enough')
-            return False
+
+        logger.info('Number of record is not enough')
+        return False
     
     @classmethod
     def fill_missing_value(cls, timestamp_metrics_sequence: List) -> List:
         """Fill missing value in sequence with interpolation"""
         timestamp_sequence, metrics_sequence = cls._timestamp_metrics_unzip(timestamp_metrics_sequence)
-        latest_time = cls._get_latest_time_in_sequence(timestamp_sequence)
+        latest_time = cls._get_latest_time(timestamp_sequence)
         if timestamp_sequence[0] != latest_time:
             timestamp_sequence.insert(0, latest_time)
             metrics_sequence.insert(0, metrics_sequence[0])
@@ -53,21 +52,23 @@ class AnomalyDetector:
     
     @classmethod
     def check_metrics_increase(cls, timestamp_metrics_sequence: List) -> None:
-        timestamp_sequence, metrics_sequence = zip(*timestamp_metrics_sequence)
+        """Return True if the average value of recent metrics is greater than the threshold"""
+        _, metrics_sequence = zip(*timestamp_metrics_sequence)
         cal_avg = lambda sequence: sum(sequence) / len(sequence)
         
         boundaly = int(Config.METRICS_SEQUENCE_LENGTH*0.2)
         new_metrics_average = cal_avg(metrics_sequence[:boundaly])
         old_metrics_average = cal_avg(metrics_sequence[boundaly:Config.METRICS_SEQUENCE_LENGTH])
         
-        anomalous = new_metrics_average * Config.THRESHOLD_RATE > old_metrics_average
-        if anomalous:
-            raise MetricsIncreaseError
-        else:
-            logger.info('There is nothing wrong with the metrics')
+        metrics_increase = new_metrics_average * Config.THRESHOLD_RATE > old_metrics_average
+        if metrics_increase:
+            return True
+
+        logger.info('There are no problems with recent metrics')    
+        return False
     
     @classmethod
-    def _get_latest_time_in_sequence(cls, timestamp_sequence: List) -> datetime.datetime:
+    def _get_latest_time(cls, timestamp_sequence: List) -> datetime.datetime:
         """Get latest time because latest time could be a minute ago due to processing time"""
         current_time = datetime.datetime.now().replace(second=0).replace(microsecond=0)
         if timestamp_sequence[0] == current_time:
@@ -78,20 +79,23 @@ class AnomalyDetector:
     
     @classmethod
     def _record_num_is_enough(cls, timestamp_sequence: List) -> bool:
+        """Return True if three missing values follow"""
         if len(timestamp_sequence) < Config.METRICS_SEQUENCE_LENGTH - Config.ALLOWABLE_NUMBER_OF_FAILURES:
             return False
         
-        latest_time = cls._get_latest_time_in_sequence(timestamp_sequence)
-            
-        failure_count = 0
-        target_time = latest_time
-        for i in range(len(timestamp_sequence)):
-            if timestamp_sequence[i] != target_time:
-                failure_count += 1
-            if failure_count > Config.ALLOWABLE_NUMBER_OF_FAILURES:
+        latest_time = cls._get_latest_time(timestamp_sequence)
+        target_datetime_list = [latest_time - datetime.timedelta(minutes=i) for i in range(Config.METRICS_SEQUENCE_LENGTH)]
+
+        count = 0
+        index = 0
+        for target_datetime in target_datetime_list:
+            if target_datetime == timestamp_sequence[index]:
+                count = 0
+                index += 1
+            else:
+                count += 1
+            if count == Config.ALLOWABLE_NUMBER_OF_FAILURES:
                 return False
-            
-            target_time -= datetime.timedelta(minutes=1)
             
         return True
     

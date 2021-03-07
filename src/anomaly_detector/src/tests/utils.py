@@ -17,7 +17,7 @@ def config_setup(config_attrs: List):
             setattr(Config, key, value)
             
 
-def get_timestamp_metrics_sequence_correct1():
+def get_timestamp_metrics_sequence1():
     now = datetime.datetime.now()
     base_date = datetime.datetime(now.year, now.month, now.day, now.hour, now.minute)
     timestamp_metrics_sequence = []
@@ -27,27 +27,7 @@ def get_timestamp_metrics_sequence_correct1():
     return timestamp_metrics_sequence
 
 
-def get_timestamp_metrics_sequence_correct2():
-    now = datetime.datetime.now()
-    base_date = datetime.datetime(now.year, now.month, now.day, now.hour, now.minute)
-    timestamp_metrics_sequence = []
-    for i in range(Config.METRICS_SEQUENCE_LENGTH):
-        delta = datetime.timedelta(minutes=i+Config.ALLOWABLE_NUMBER_OF_FAILURES-2)
-        timestamp_metrics_sequence.append((base_date - delta, 100.0))
-    return timestamp_metrics_sequence
-
-
-def get_timestamp_metrics_sequence_correct3():
-    now = datetime.datetime.now()
-    base_date = datetime.datetime(now.year, now.month, now.day, now.hour, now.minute)
-    timestamp_metrics_sequence = []
-    for i in range(Config.METRICS_SEQUENCE_LENGTH):
-        delta = datetime.timedelta(minutes=i*2)
-        timestamp_metrics_sequence.append((base_date - delta, 100.0))
-    return timestamp_metrics_sequence
-
-
-def get_timestamp_metrics_sequence_incorrect1():
+def get_timestamp_metrics_sequence2():
     now = datetime.datetime.now()
     base_date = datetime.datetime(now.year, now.month, now.day, now.hour, now.minute)
     timestamp_metrics_sequence = []
@@ -57,7 +37,39 @@ def get_timestamp_metrics_sequence_incorrect1():
     return timestamp_metrics_sequence
 
 
-def get_sparse_and_dense_timestamp_metrics_sequence1():
+def get_timestamp_metrics_sequence3():
+    now = datetime.datetime.now()
+    base_date = datetime.datetime(now.year, now.month, now.day, now.hour, now.minute)
+    timestamp_metrics_sequence = []
+    for i in range(Config.METRICS_SEQUENCE_LENGTH):
+        delta = datetime.timedelta(minutes=i*2)
+        timestamp_metrics_sequence.append((base_date - delta, 100.0))
+    return timestamp_metrics_sequence
+
+
+def get_timestamp_metrics_sequence4():
+    now = datetime.datetime.now()
+    base_date = datetime.datetime(now.year, now.month, now.day, now.hour, now.minute)
+    timestamp_metrics_sequence = []
+    for i in range(Config.METRICS_SEQUENCE_LENGTH):
+        delta = datetime.timedelta(minutes=i+Config.ALLOWABLE_NUMBER_OF_FAILURES+1)
+        timestamp_metrics_sequence.append((base_date - delta, 100.0))
+    return timestamp_metrics_sequence
+
+def get_timestamp_metrics_sequence5():
+    now = datetime.datetime.now()
+    base_date = datetime.datetime(now.year, now.month, now.day, now.hour, now.minute)
+    timestamp_metrics_sequence = []
+    for i in range(Config.METRICS_SEQUENCE_LENGTH):
+        if i < 3:
+            metrics = 1000.0
+        else:
+            metrics = 100.0
+        delta = datetime.timedelta(minutes=i+Config.ALLOWABLE_NUMBER_OF_FAILURES)
+        timestamp_metrics_sequence.append((base_date - delta, metrics))
+    return timestamp_metrics_sequence
+
+def get_sparse_and_dense_timestamp_metrics1():
     now = datetime.datetime.now()
     base_date = datetime.datetime(now.year, now.month, now.day, now.hour, now.minute)
     sparse_timestamp_metrics_sequence = []
