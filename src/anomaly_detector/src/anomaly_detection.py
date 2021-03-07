@@ -48,6 +48,7 @@ class AnomalyDetector:
         
         # Sort by timestamp sequence
         filled_timestamp_metrics_sequence = sorted(zip(filled_timestamp_sequence, filled_metrics_sequence), reverse=True)
+        filled_timestamp_metrics_sequence = filled_timestamp_metrics_sequence[:Config.METRICS_SEQUENCE_LENGTH]
         return filled_timestamp_metrics_sequence
     
     @classmethod
