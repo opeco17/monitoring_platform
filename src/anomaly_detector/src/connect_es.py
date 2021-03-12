@@ -10,6 +10,7 @@ from typing import Dict, List, Tuple
 from config import Config
 from exceptions import *
 from logger import logger
+from utils import json_file_output
 
 
 class ElasticsearchConnector:

@@ -1,0 +1,384 @@
+{
+  "took": 19,
+  "timed_out": false,
+  "_shards": {
+    "total": 2,
+    "successful": 2,
+    "skipped": 0,
+    "failed": 0
+  },
+  "hits": {
+    "total": {
+      "value": 335,
+      "relation": "eq"
+    },
+    "max_score": null,
+    "hits": []
+  },
+  "aggregations": {
+    "histogram": {
+      "buckets": [
+        {
+          "key_as_string": "1615105620000",
+          "key": 1615105620000,
+          "doc_count": 1,
+          "metrics_average": {
+            "value": 27.173999786376953
+          },
+          "timestamp_average": {
+            "value": 1615105655788.0,
+            "value_as_string": "1615105655788"
+          }
+        },
+        {
+          "key_as_string": "1615105560000",
+          "key": 1615105560000,
+          "doc_count": 1,
+          "metrics_average": {
+            "value": 36.62799835205078
+          },
+          "timestamp_average": {
+            "value": 1615105599624.0,
+            "value_as_string": "1615105599624"
+          }
+        },
+        {
+          "key_as_string": "1615105500000",
+          "key": 1615105500000,
+          "doc_count": 1,
+          "metrics_average": {
+            "value": 31.992000579833984
+          },
+          "timestamp_average": {
+            "value": 1615105537962.0,
+            "value_as_string": "1615105537962"
+          }
+        },
+        {
+          "key_as_string": "1615105440000",
+          "key": 1615105440000,
+          "doc_count": 1,
+          "metrics_average": {
+            "value": 38.73099899291992
+          },
+          "timestamp_average": {
+            "value": 1615105472562.0,
+            "value_as_string": "1615105472562"
+          }
+        },
+        {
+          "key_as_string": "1615105380000",
+          "key": 1615105380000,
+          "doc_count": 1,
+          "metrics_average": {
+            "value": 31.545000076293945
+          },
+          "timestamp_average": {
+            "value": 1615105419260.0,
+            "value_as_string": "1615105419260"
+          }
+        },
+        {
+          "key_as_string": "1615105320000",
+          "key": 1615105320000,
+          "doc_count": 1,
+          "metrics_average": {
+            "value": 31.684999465942383
+          },
+          "timestamp_average": {
+            "value": 1615105352534.0,
+            "value_as_string": "1615105352534"
+          }
+        },
+        {
+          "key_as_string": "1615105260000",
+          "key": 1615105260000,
+          "doc_count": 1,
+          "metrics_average": {
+            "value": 31.308000564575195
+          },
+          "timestamp_average": {
+            "value": 1615105298136.0,
+            "value_as_string": "1615105298136"
+          }
+        },
+        {
+          "key_as_string": "1615105200000",
+          "key": 1615105200000,
+          "doc_count": 1,
+          "metrics_average": {
+            "value": 435.7090148925781
+          },
+          "timestamp_average": {
+            "value": 1615105234713.0,
+            "value_as_string": "1615105234713"
+          }
+        },
+        {
+          "key_as_string": "1615105140000",
+          "key": 1615105140000,
+          "doc_count": 1,
+          "metrics_average": {
+            "value": 32.4370002746582
+          },
+          "timestamp_average": {
+            "value": 1615105176789.0,
+            "value_as_string": "1615105176789"
+          }
+        },
+        {
+          "key_as_string": "1615105080000",
+          "key": 1615105080000,
+          "doc_count": 1,
+          "metrics_average": {
+            "value": 482.7950134277344
+          },
+          "timestamp_average": {
+            "value": 1615105116008.0,
+            "value_as_string": "1615105116008"
+          }
+        },
+        {
+          "key_as_string": "1615105020000",
+          "key": 1615105020000,
+          "doc_count": 1,
+          "metrics_average": {
+            "value": 26.503999710083008
+          },
+          "timestamp_average": {
+            "value": 1615105051895.0,
+            "value_as_string": "1615105051895"
+          }
+        },
+        {
+          "key_as_string": "1615104960000",
+          "key": 1615104960000,
+          "doc_count": 1,
+          "metrics_average": {
+            "value": 182.1179962158203
+          },
+          "timestamp_average": {
+            "value": 1615104993655.0,
+            "value_as_string": "1615104993655"
+          }
+        },
+        {
+          "key_as_string": "1615104900000",
+          "key": 1615104900000,
+          "doc_count": 1,
+          "metrics_average": {
+            "value": 441.8210144042969
+          },
+          "timestamp_average": {
+            "value": 1615104936752.0,
+            "value_as_string": "1615104936752"
+          }
+        },
+        {
+          "key_as_string": "1615104840000",
+          "key": 1615104840000,
+          "doc_count": 1,
+          "metrics_average": {
+            "value": 436.6419982910156
+          },
+          "timestamp_average": {
+            "value": 1615104876055.0,
+            "value_as_string": "1615104876055"
+          }
+        },
+        {
+          "key_as_string": "1615104780000",
+          "key": 1615104780000,
+          "doc_count": 1,
+          "metrics_average": {
+            "value": 37.12099838256836
+          },
+          "timestamp_average": {
+            "value": 1615104816231.0,
+            "value_as_string": "1615104816231"
+          }
+        },
+        {
+          "key_as_string": "1615104720000",
+          "key": 1615104720000,
+          "doc_count": 1,
+          "metrics_average": {
+            "value": 53.19200134277344
+          },
+          "timestamp_average": {
+            "value": 1615104750659.0,
+            "value_as_string": "1615104750659"
+          }
+        },
+        {
+          "key_as_string": "1615104660000",
+          "key": 1615104660000,
+          "doc_count": 1,
+          "metrics_average": {
+            "value": 443.6839904785156
+          },
+          "timestamp_average": {
+            "value": 1615104692184.0,
+            "value_as_string": "1615104692184"
+          }
+        },
+        {
+          "key_as_string": "1615104600000",
+          "key": 1615104600000,
+          "doc_count": 1,
+          "metrics_average": {
+            "value": 30.983999252319336
+          },
+          "timestamp_average": {
+            "value": 1615104634198.0,
+            "value_as_string": "1615104634198"
+          }
+        },
+        {
+          "key_as_string": "1615104540000",
+          "key": 1615104540000,
+          "doc_count": 1,
+          "metrics_average": {
+            "value": 598.4650268554688
+          },
+          "timestamp_average": {
+            "value": 1615104577358.0,
+            "value_as_string": "1615104577358"
+          }
+        },
+        {
+          "key_as_string": "1615104480000",
+          "key": 1615104480000,
+          "doc_count": 1,
+          "metrics_average": {
+            "value": 590.3259887695312
+          },
+          "timestamp_average": {
+            "value": 1615104518435.0,
+            "value_as_string": "1615104518435"
+          }
+        },
+        {
+          "key_as_string": "1615104420000",
+          "key": 1615104420000,
+          "doc_count": 1,
+          "metrics_average": {
+            "value": 440.5050048828125
+          },
+          "timestamp_average": {
+            "value": 1615104460429.0,
+            "value_as_string": "1615104460429"
+          }
+        },
+        {
+          "key_as_string": "1615104360000",
+          "key": 1615104360000,
+          "doc_count": 1,
+          "metrics_average": {
+            "value": 27.52199935913086
+          },
+          "timestamp_average": {
+            "value": 1615104391848.0,
+            "value_as_string": "1615104391848"
+          }
+        },
+        {
+          "key_as_string": "1615104300000",
+          "key": 1615104300000,
+          "doc_count": 1,
+          "metrics_average": {
+            "value": 436.3080139160156
+          },
+          "timestamp_average": {
+            "value": 1615104326482.0,
+            "value_as_string": "1615104326482"
+          }
+        },
+        {
+          "key_as_string": "1615104240000",
+          "key": 1615104240000,
+          "doc_count": 1,
+          "metrics_average": {
+            "value": 39.1510009765625
+          },
+          "timestamp_average": {
+            "value": 1615104278748.0,
+            "value_as_string": "1615104278748"
+          }
+        },
+        {
+          "key_as_string": "1615104180000",
+          "key": 1615104180000,
+          "doc_count": 1,
+          "metrics_average": {
+            "value": 438.4570007324219
+          },
+          "timestamp_average": {
+            "value": 1615104214912.0,
+            "value_as_string": "1615104214912"
+          }
+        },
+        {
+          "key_as_string": "1615104120000",
+          "key": 1615104120000,
+          "doc_count": 1,
+          "metrics_average": {
+            "value": 592.3889770507812
+          },
+          "timestamp_average": {
+            "value": 1615104144839.0,
+            "value_as_string": "1615104144839"
+          }
+        },
+        {
+          "key_as_string": "1615104060000",
+          "key": 1615104060000,
+          "doc_count": 1,
+          "metrics_average": {
+            "value": 582.2540283203125
+          },
+          "timestamp_average": {
+            "value": 1615104097972.0,
+            "value_as_string": "1615104097972"
+          }
+        },
+        {
+          "key_as_string": "1615104000000",
+          "key": 1615104000000,
+          "doc_count": 1,
+          "metrics_average": {
+            "value": 437.4219970703125
+          },
+          "timestamp_average": {
+            "value": 1615104033575.0,
+            "value_as_string": "1615104033575"
+          }
+        },
+        {
+          "key_as_string": "1615103940000",
+          "key": 1615103940000,
+          "doc_count": 1,
+          "metrics_average": {
+            "value": 598.4039916992188
+          },
+          "timestamp_average": {
+            "value": 1615103969431.0,
+            "value_as_string": "1615103969431"
+          }
+        },
+        {
+          "key_as_string": "1615103880000",
+          "key": 1615103880000,
+          "doc_count": 1,
+          "metrics_average": {
+            "value": 28.812999725341797
+          },
+          "timestamp_average": {
+            "value": 1615103913308.0,
+            "value_as_string": "1615103913308"
+          }
+        }
+      ]
+    }
+  }
+}
