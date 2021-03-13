@@ -1,5 +1,4 @@
 from retry import retry
-import sys
 from typing import Dict, List
 
 from concurrent import futures
@@ -11,6 +10,7 @@ from requests.exceptions import ConnectionError, HTTPError, Timeout
 from logger import logger
 from config import Config
 from exceptions import *
+from utils import *
 
 
 class MetricsGetter:
