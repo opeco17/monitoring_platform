@@ -19,5 +19,5 @@ chmod +x start.sh
 
 # Demonstration
 
-<img src="https://user-images.githubusercontent.com/46510874/107530921-abe9f080-6bff-11eb-981f-f5d8235fbdbd.png" width="800">
+<img src="https://user-images.githubusercontent.com/46510874/111021579-bf5fc580-8410-11eb-933f-1e4b279eea44.png" width="800">
 
