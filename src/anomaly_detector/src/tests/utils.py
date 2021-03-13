@@ -12,6 +12,9 @@ class ResponseMock:
         self.status_code = status_code
         self.body = body
         
+    def json(self):
+        return self.body
+        
     def raise_for_status(self):
         if 200 <= self.status_code <= 299:
             return
@@ -33,7 +36,7 @@ def config_setup(config_attrs: List) -> None:
 
 def get_timestamp_metrics_sequence1() -> List:
     """
-        Return [(current_time, 100.0), (1minutes_ago, 100.0), (2minutes_ago, 100.0), ...]
+    Return [(current_time, 100.0), (1minutes_ago, 100.0), (2minutes_ago, 100.0), ...]
     """
     now = datetime.datetime.now()
     base_date = datetime.datetime(now.year, now.month, now.day, now.hour, now.minute)
@@ -46,8 +49,8 @@ def get_timestamp_metrics_sequence1() -> List:
 
 def get_timestamp_metrics_sequence2() -> List:
     """
-        If Config.ALLOWABLE_NUMBER_OF_FAILURES is 3,
-        return [(2minutes_ago, 100.0), (3minutes_ago, 100.0), (4minutes_ago, 100.0), ...]
+    If Config.ALLOWABLE_NUMBER_OF_FAILURES is 3,
+    return [(2minutes_ago, 100.0), (3minutes_ago, 100.0), (4minutes_ago, 100.0), ...]
     """
     now = datetime.datetime.now()
     base_date = datetime.datetime(now.year, now.month, now.day, now.hour, now.minute)
@@ -60,7 +63,7 @@ def get_timestamp_metrics_sequence2() -> List:
 
 def get_timestamp_metrics_sequence3() -> List:
     """
-        Return [(current_time, 100.0), (2minutes_ago, 100.0), (4minutes_ago, 100.0), ...]
+    Return [(current_time, 100.0), (2minutes_ago, 100.0), (4minutes_ago, 100.0), ...]
     """
     now = datetime.datetime.now()
     base_date = datetime.datetime(now.year, now.month, now.day, now.hour, now.minute)
@@ -73,8 +76,8 @@ def get_timestamp_metrics_sequence3() -> List:
 
 def get_timestamp_metrics_sequence4() -> List:
     """
-        If Config.ALLOWABLE_NUMBER_OF_FAILURES is 3,
-        return [(4minutes_ago, 100.0), (5minutes_ago, 100.0), (6minutes_ago, 100.0), ...]
+    If Config.ALLOWABLE_NUMBER_OF_FAILURES is 3,
+    return [(4minutes_ago, 100.0), (5minutes_ago, 100.0), (6minutes_ago, 100.0), ...]
     """
     now = datetime.datetime.now()
     base_date = datetime.datetime(now.year, now.month, now.day, now.hour, now.minute)
@@ -86,8 +89,8 @@ def get_timestamp_metrics_sequence4() -> List:
 
 def get_timestamp_metrics_sequence5() -> List:
     """
-        If Config.ALLOWABLE_NUMBER_OF_FAILURES is 3,
-        return [(current_time, 1000.0), (1minutes_ago, 1000.0), (2minutes_ago, 1000.0), (3minutes_ago, 100.0), ...]
+    If Config.ALLOWABLE_NUMBER_OF_FAILURES is 3,
+    return [(current_time, 1000.0), (1minutes_ago, 1000.0), (2minutes_ago, 1000.0), (3minutes_ago, 100.0), ...]
     """
     now = datetime.datetime.now()
     base_date = datetime.datetime(now.year, now.month, now.day, now.hour, now.minute)
@@ -103,8 +106,8 @@ def get_timestamp_metrics_sequence5() -> List:
 
 def get_sparse_and_dense_timestamp_metrics1() -> List:
     """
-        Sparse timestamp metrics: [(current_time, 1000.0), (2minutes_ago, 1000.0), (4minutes_ago, 1000.0), ...]
-        Dense timestamp metrics: [(current_time, 1000.0), (1minutes_ago, 1000.0), (2minutes_ago, 1000.0), ...]
+    Sparse timestamp metrics: [(current_time, 1000.0), (2minutes_ago, 1000.0), (4minutes_ago, 1000.0), ...]
+    Dense timestamp metrics: [(current_time, 1000.0), (1minutes_ago, 1000.0), (2minutes_ago, 1000.0), ...]
     """
     now = datetime.datetime.now()
     base_date = datetime.datetime(now.year, now.month, now.day, now.hour, now.minute)
