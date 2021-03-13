@@ -17,7 +17,7 @@ chmod +x start.sh
 ./start.sh
 ```
 
-# Demonstration
+# Visualization
 
 <img src="https://user-images.githubusercontent.com/46510874/111021579-bf5fc580-8410-11eb-933f-1e4b279eea44.png" width="800">
 
