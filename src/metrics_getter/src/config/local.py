@@ -11,7 +11,7 @@ class Config:
     
     INDEX_PREFIX = 'pagespeed-metrics'
     INDEX_TEMPLATE_NAME = 'pagespeed-metrics-index-template'
-    INDEX_TEMPLATE_FILE = 'es_json/index_template.json'
+    INDEX_TEMPLATE_FILE = 'json/index_template.json'
     
     LOG_LEVEL_DICT = {'DEBUG': DEBUG, 'INFO': INFO, 'WARNING': WARNING, 'ERROR': ERROR}
     LOG_LEVEL = LOG_LEVEL_DICT['DEBUG']
